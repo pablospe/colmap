@@ -468,6 +468,25 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
     return false;
   }
 
+  // save 3D-2D correspondences
+  std::ofstream file_pose("pose.txt");
+  if (file_pose.is_open()) {
+    // header file
+    file_pose << "# Query Pose: QW, QX, QY, QZ, TX, TY, TZ\n";
+
+    // save data
+    auto qvec = image.Qvec();
+    auto tvec = image.Tvec();
+    file_pose
+      << qvec[0] << " " << qvec[1] << " " << qvec[2] << " " << qvec[3] << " "
+      << tvec[0] << " " << tvec[1] << " " << tvec[2] << "\n";
+    file_pose.close();
+  }
+  else {
+    std::cout << "Unable to open file";
+  }
+
+
   if (num_inliers < static_cast<size_t>(options.abs_pose_min_num_inliers)) {
     return false;
   }
@@ -480,6 +499,48 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
                           tri_points2D, tri_points3D, &image.Qvec(),
                           &image.Tvec(), &camera)) {
     return false;
+  }
+
+  // save 3D-2D correspondences
+  std::ofstream file_pose_refined("pose_refined.txt");
+  if (file_pose_refined.is_open()) {
+    // header file
+    file_pose_refined << "# Query Pose: QW, QX, QY, QZ, TX, TY, TZ\n";
+
+    // save data
+    auto qvec = image.Qvec();
+    auto tvec = image.Tvec();
+    file_pose_refined
+      << qvec[0] << " " << qvec[1] << " " << qvec[2] << " " << qvec[3] << " "
+      << tvec[0] << " " << tvec[1] << " " << tvec[2] << "\n";
+    file_pose_refined.close();
+  }
+  else {
+    std::cout << "Unable to open file";
+  }
+
+  // save 3D-2D correspondences
+  std::ofstream file_corr("corresp.txt");
+
+  // header file
+  file_corr << "# List of 3D-2D correspondences (putative matches): x y POINT3D_ID isInlier X Y Z\n";
+
+  if (file_corr.is_open()) {
+    for (size_t i = 0; i < tri_points2D.size(); ++i) {
+      auto point2D = tri_points2D[i];
+      auto point3D = tri_points3D[i];
+      auto pt_corr = tri_corrs[i].second;
+
+      // save data
+      file_corr << point2D.x() << " " << point2D.y() << " "
+        << pt_corr << " "
+        << (inlier_mask[i] ? '1' : '0') << " "
+        << point3D.x() << " " << point3D.y() << " " << point3D.z() << "\n";
+    }
+    file_corr.close();
+  }
+  else {
+	  std::cout << "Unable to open file";
   }
 
   //////////////////////////////////////////////////////////////////////////////
