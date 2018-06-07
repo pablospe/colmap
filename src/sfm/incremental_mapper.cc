@@ -523,19 +523,23 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
   std::ofstream file_corr("corresp.txt");
 
   // header file
-  file_corr << "# List of 3D-2D correspondences (putative matches): x y POINT3D_ID isInlier X Y Z\n";
+  file_corr << "# List of 3D-2D correspondences (putative matches): POINT2D_ID POINT3D_ID x y X Y Z isInlier\n";
 
   if (file_corr.is_open()) {
     for (size_t i = 0; i < tri_points2D.size(); ++i) {
       auto point2D = tri_points2D[i];
       auto point3D = tri_points3D[i];
-      auto pt_corr = tri_corrs[i].second;
+      auto point2D_id = tri_corrs[i].first;
+      auto point3D_id = tri_corrs[i].second;
 
       // save data
-      file_corr << point2D.x() << " " << point2D.y() << " "
-        << pt_corr << " "
-        << (inlier_mask[i] ? '1' : '0') << " "
-        << point3D.x() << " " << point3D.y() << " " << point3D.z() << "\n";
+      file_corr
+        << point2D_id << " "
+        << point3D_id << " "
+        << point2D.x() << " " << point2D.y() << " "
+        << point3D.x() << " " << point3D.y() << " " << point3D.z() << " "
+        << (inlier_mask[i] ? '1' : '0')
+        << "\n";
     }
     file_corr.close();
   }
