@@ -17,6 +17,7 @@
 #include "base/reconstruction.h"
 
 #include <fstream>
+#include <iomanip>
 
 #include "base/pose.h"
 #include "base/projection.h"
@@ -1693,7 +1694,7 @@ void Reconstruction::WriteCamerasText(const std::string& path) const {
     line << camera.second.Height() << " ";
 
     for (const double param : camera.second.Params()) {
-      line << param << " ";
+      line << std::setprecision(17) << param << " ";
     }
 
     std::string line_string = line.str();
@@ -1729,15 +1730,15 @@ void Reconstruction::WriteImagesText(const std::string& path) const {
     // QVEC (qw, qx, qy, qz)
     const Eigen::Vector4d normalized_qvec =
         NormalizeQuaternion(image.second.Qvec());
-    line << normalized_qvec(0) << " ";
-    line << normalized_qvec(1) << " ";
-    line << normalized_qvec(2) << " ";
-    line << normalized_qvec(3) << " ";
+    line << std::setprecision(17) << normalized_qvec(0) << " ";
+    line << std::setprecision(17) << normalized_qvec(1) << " ";
+    line << std::setprecision(17) << normalized_qvec(2) << " ";
+    line << std::setprecision(17) << normalized_qvec(3) << " ";
 
     // TVEC
-    line << image.second.Tvec(0) << " ";
-    line << image.second.Tvec(1) << " ";
-    line << image.second.Tvec(2) << " ";
+    line << std::setprecision(17) << image.second.Tvec(0) << " ";
+    line << std::setprecision(17) << image.second.Tvec(1) << " ";
+    line << std::setprecision(17) << image.second.Tvec(2) << " ";
 
     line << image.second.CameraId() << " ";
 
@@ -1749,8 +1750,8 @@ void Reconstruction::WriteImagesText(const std::string& path) const {
     line.clear();
 
     for (const Point2D& point2D : image.second.Points2D()) {
-      line << point2D.X() << " ";
-      line << point2D.Y() << " ";
+      line << std::setprecision(17) << point2D.X() << " ";
+      line << std::setprecision(17) << point2D.Y() << " ";
       if (point2D.HasPoint3D()) {
         line << point2D.Point3DId() << " ";
       } else {
@@ -1776,9 +1777,9 @@ void Reconstruction::WritePoints3DText(const std::string& path) const {
 
   for (const auto& point3D : points3D_) {
     file << point3D.first << " ";
-    file << point3D.second.XYZ()(0) << " ";
-    file << point3D.second.XYZ()(1) << " ";
-    file << point3D.second.XYZ()(2) << " ";
+    file << std::setprecision(17) << point3D.second.XYZ()(0) << " ";
+    file << std::setprecision(17) << point3D.second.XYZ()(1) << " ";
+    file << std::setprecision(17) << point3D.second.XYZ()(2) << " ";
     file << static_cast<int>(point3D.second.Color(0)) << " ";
     file << static_cast<int>(point3D.second.Color(1)) << " ";
     file << static_cast<int>(point3D.second.Color(2)) << " ";

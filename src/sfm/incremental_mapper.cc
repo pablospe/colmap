@@ -17,6 +17,7 @@
 #include "sfm/incremental_mapper.h"
 
 #include <fstream>
+#include <iomanip>
 
 #include "base/projection.h"
 #include "base/triangulation.h"
@@ -478,8 +479,13 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
     auto qvec = image.Qvec();
     auto tvec = image.Tvec();
     file_pose
-      << qvec[0] << " " << qvec[1] << " " << qvec[2] << " " << qvec[3] << " "
-      << tvec[0] << " " << tvec[1] << " " << tvec[2] << "\n";
+      << std::setprecision(17) << qvec[0] << " "
+      << std::setprecision(17) << qvec[1] << " "
+      << std::setprecision(17) << qvec[2] << " "
+      << std::setprecision(17) << qvec[3] << " "
+      << std::setprecision(17) << tvec[0] << " "
+      << std::setprecision(17) << tvec[1] << " "
+      << std::setprecision(17) << tvec[2] << "\n";
     file_pose.close();
   }
   else {
@@ -511,8 +517,13 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
     auto qvec = image.Qvec();
     auto tvec = image.Tvec();
     file_pose_refined
-      << qvec[0] << " " << qvec[1] << " " << qvec[2] << " " << qvec[3] << " "
-      << tvec[0] << " " << tvec[1] << " " << tvec[2] << "\n";
+      << std::setprecision(17) << qvec[0] << " "
+      << std::setprecision(17) << qvec[1] << " "
+      << std::setprecision(17) << qvec[2] << " "
+      << std::setprecision(17) << qvec[3] << " "
+      << std::setprecision(17) << tvec[0] << " "
+      << std::setprecision(17) << tvec[1] << " "
+      << std::setprecision(17) << tvec[2] << "\n";
     file_pose_refined.close();
   }
   else {
@@ -536,8 +547,11 @@ bool IncrementalMapper::RegisterNextImage(const Options& options,
       file_corr
         << point2D_id << " "
         << point3D_id << " "
-        << point2D.x() << " " << point2D.y() << " "
-        << point3D.x() << " " << point3D.y() << " " << point3D.z() << " "
+        << std::setprecision(17) << point2D.x() << " "
+        << std::setprecision(17) << point2D.y() << " "
+        << std::setprecision(17) << point3D.x() << " "
+        << std::setprecision(17) << point3D.y() << " "
+        << std::setprecision(17) << point3D.z() << " "
         << (inlier_mask[i] ? '1' : '0')
         << "\n";
     }
