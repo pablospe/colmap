@@ -255,7 +255,7 @@ set(CMAKE_AUTORCC ON)
 # https://gitlab.kitware.com/cmake/community/-/wikis/doc/cmake/RPATH-handling
 ################################################################################
 
-if(BUILD_SHARED_LIBS)
+# if(BUILD_SHARED_LIBS)
   # use, i.e. don't skip the full RPATH for the build tree
   set(CMAKE_SKIP_BUILD_RPATH FALSE)
 
@@ -274,7 +274,7 @@ if(BUILD_SHARED_LIBS)
   if("${isSystemDir}" STREQUAL "-1")
       set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
   endif()
-endif()
+# endif()
 
 ################################################################################
 # Add sources
